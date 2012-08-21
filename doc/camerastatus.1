@@ -1,0 +1,70 @@
+.TH camerastatus 0.5 "August 2012"
+.\" Process with
+.\" groff -man -Tascii camerastatus.1
+.\"
+.SH NAME
+camerastatus \- CAMERA system status monitor
+.SH SYNOPSIS
+.B camerastatus
+[
+.B \-hlntv
+] [
+.BI \-c " config\-file"
+] [
+.BI \-d " debuglevel"
+] [
+.BI \-p " 0|1"
+]
+.SH DESCRIPTION
+.B camerastatus
+A description should go here
+.PP
+When
+.B camerastatus blah blah
+.SH OPTIONS
+.TP 12
+.B \-h,\--help
+Display a short usage description, including all available options.
+.TP
+.B \-n,\--nodaemon
+Runs the proftpd process in standalone mode (must be configured as such in
+the configuration file), but does not background the process or
+disassociate it from the controlling tty.  Additionally, all output (log
+or debug messages) are sent to stderr, rather than the syslog mechanism. 
+Most often used with the \fB-d option\fP for debugging. 
+.TP
+.BI \-c,\--config " config\-file"
+Specifies an alternate \fIconfig\-file\fP to be parsed at startup, rather
+than the default configuration file.  The default configuration file is
+.B @SYSCONFDIR@/proftpd.conf
+.TP
+.BI \-6,\--ipv6
+Support IPv6 connections and lookup of IPv6 addresses for server DNS names.
+This is enabled by default, if the \fB--enable-ipv6\fP configure option is
+used.
+.SH FILES
+.PD 0
+.B @bindir@/proftpd
+.br
+.B @bindir@/proftpd.conf
+.br
+.B @bindir@/ftpwho
+.br
+.B @bindir@/ftpcount
+.br
+.B @bindir@/ftptop
+.br
+.B @bindir@/ftpshut
+.br
+.B /var/log/xferlog
+.br
+.B @LOCALSTATEDIR@/proftpd.pid
+.br
+.B @LOCALSTATEDIR@/proftpd.scoreboard
+.PD
+.SH AUTHORS
+.PP
+camerastatus is written by ...
+.PP
+Report bugs at
+.BR http://not sure yet/

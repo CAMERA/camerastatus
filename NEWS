@@ -1,0 +1,8 @@
+   New in camerastatus 0.5
+   -----------------------
+
+* This is the version version of camerastatus and
+  should be considered alpha.
+
+* The application is hardcoded to hit 
+  http://cylume.camera.calit2.net/jstatus.txt
