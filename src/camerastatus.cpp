@@ -1,18 +1,82 @@
 #include <stdio.h>
-#include <curses.h>
+#include <ncurses.h>
 #include <unistd.h>
+#include <string>
 #include "StatusModel.hpp"
 #include "URLStatusModel.hpp"
 #include "FakeStatusModel.hpp"
 #include "CursesView.hpp"
 
+
+void help(){
+   fprintf(stderr,"Usage: camerastatus [ -h,-help,--help ] [ -url http URL ] [ -v,-version ]\n");
+   fprintf(stderr,"Display current status of CAMERA system\n\n");
+   fprintf(stderr,"   -h,--help\t\tDisplays this help\n");
+   fprintf(stderr,"   -url [http URL]\t\tSets alternate URL to obtain CAMERA status from\n");
+   fprintf(stderr,"   -simulate\t\tDisplays fake data to test UI\n");
+   fprintf(stderr,"   -v,--version\t\t Display version\n");
+
+   return;
+}
+
+void version(){
+   fprintf(stderr,"camerastatus 0.5\n");
+   return;
+}
+
+/**
+ * Main function to start camerastatus.  
+ * This program displays current status of
+ * CAMERA system by pulling information from
+ * a webpage and displaying it using 
+ * the curses UI library.
+ */
 int main(int argc, const char* argv[]) {
-    
+   
+    //Number of seconds to sleep between each update call to the CursesView 
     int sleepTimeout = 1;
+
+    //Number of intervals to wait before hitting the URL to get fresh data.
+    //to find out number of seconds of delay take this number times sleepTimeout
     int refreshInterval = 300;
+
+    //used to check if user hit Q/q or r/R key while in loop
     char keyCheck;
-    
-    StatusModel *status = (StatusModel *)new URLStatusModel("http://cylume.camera.calit2.net/jstatus.txt");
+    std::string command;
+    std::string url = std::string("http://cylume.camera.calit2.net/jstatus.txt");
+
+    StatusModel *status = NULL;
+
+
+    //loop through command line parameters passed into this program
+    for (int i = 0; i < argc; i++){
+      command = std::string(argv[i]);
+      if (command.compare("-h") == 0 || 
+          command.compare("-help") == 0 ||
+          command.compare("--help") == 0){
+         help();
+         return 1;
+      }
+      else if (command.compare("-version") == 0  || 
+               command.compare("--version") == 0){
+         version();
+         return 1;
+      }
+      else if (command.compare("-url") == 0){
+         if (i+1>=argc){
+            fprintf(stderr,"-url parameter requires an argument.  Run camerastatus -h for more information\n");
+            return 2;
+         }
+         url = std::string(argv[++i]);
+      }
+      else if (command.compare("-simulate") == 0){
+         status = new FakeStatusModel();
+      }
+    }
+ 
+    if (status == NULL){	
+	    status = (StatusModel *)new URLStatusModel(url.c_str());
+    }
     
     status->refresh();
     //return 0;

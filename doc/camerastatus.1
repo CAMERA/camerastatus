@@ -5,66 +5,40 @@
 .SH NAME
 camerastatus \- CAMERA system status monitor
 .SH SYNOPSIS
-.B camerastatus
+.B camerastatus 
 [
-.B \-hlntv
+.B \-h,--help
 ] [
-.BI \-c " config\-file"
+.BI \-url " http URL"
 ] [
-.BI \-d " debuglevel"
-] [
-.BI \-p " 0|1"
+.B \-v,\--version
 ]
 .SH DESCRIPTION
-.B camerastatus
-A description should go here
+Displays information of current status of CAMERA system 
 .PP
-When
-.B camerastatus blah blah
 .SH OPTIONS
 .TP 12
 .B \-h,\--help
 Display a short usage description, including all available options.
 .TP
-.B \-n,\--nodaemon
-Runs the proftpd process in standalone mode (must be configured as such in
-the configuration file), but does not background the process or
-disassociate it from the controlling tty.  Additionally, all output (log
-or debug messages) are sent to stderr, rather than the syslog mechanism. 
-Most often used with the \fB-d option\fP for debugging. 
+.B \-v,\--version
+Displays version.
 .TP
-.BI \-c,\--config " config\-file"
-Specifies an alternate \fIconfig\-file\fP to be parsed at startup, rather
-than the default configuration file.  The default configuration file is
-.B @SYSCONFDIR@/proftpd.conf
+.BI \-url " http URL"
+Specifies alternate URL from which to obtain current status of CAMERA.  The
+default url is 
+http://cylume.camera.calit2.net/jstatus.txt.
 .TP
-.BI \-6,\--ipv6
-Support IPv6 connections and lookup of IPv6 addresses for server DNS names.
-This is enabled by default, if the \fB--enable-ipv6\fP configure option is
-used.
+.B \-simulate
+Instead of using real data this mode simulates CAMERA status.
 .SH FILES
 .PD 0
-.B @bindir@/proftpd
+.B @bindir@/camerastatus
 .br
-.B @bindir@/proftpd.conf
-.br
-.B @bindir@/ftpwho
-.br
-.B @bindir@/ftpcount
-.br
-.B @bindir@/ftptop
-.br
-.B @bindir@/ftpshut
-.br
-.B /var/log/xferlog
-.br
-.B @LOCALSTATEDIR@/proftpd.pid
-.br
-.B @LOCALSTATEDIR@/proftpd.scoreboard
 .PD
 .SH AUTHORS
 .PP
-camerastatus is written by ...
+camerastatus is written by Christopher Churas<churas@gmail.com>
 .PP
 Report bugs at
-.BR http://not sure yet/
+.BR https://github.com/CAMERA/camerastatus
