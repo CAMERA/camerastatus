@@ -6,6 +6,7 @@
  */
 
 #include "StringUtil.hpp"
+#include <stdio.h>
 #include <string>
 StringUtil::StringUtil() {
 }
