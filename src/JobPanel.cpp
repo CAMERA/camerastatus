@@ -130,7 +130,7 @@ const char *JobPanel::getAvgWaitToRunAsPaddedString(int waitInSeconds){
         snprintf(buff,WAITFIELDSIZE,"%d minutes",waitInSeconds/60);
     }
     else if (waitInSeconds > 3600){
-        snprintf(buff,WAITFIELDSIZE,"%.1f hours",(float)waitInSeconds/(float)60.0);
+        snprintf(buff,WAITFIELDSIZE,"%.1f hours",(float)waitInSeconds/(float)3600.0);
     }
     std::string retval = std::string(buff);
     return retval.c_str();
