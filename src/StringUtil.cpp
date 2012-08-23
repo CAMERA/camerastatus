@@ -8,6 +8,8 @@
 #include "StringUtil.hpp"
 #include <stdio.h>
 #include <string>
+#include <errno.h>
+
 StringUtil::StringUtil() {
 }
 
@@ -44,3 +46,20 @@ const char *StringUtil::getIntAsPaddedString(int value,int maxvalue,int width){
     return rbuff.c_str();
 }
 
+int StringUtil::convertStringToNumber(const char *val) {
+    if (val == NULL) {
+        return -1;
+    }
+    std::string valStr = std::string(val);
+
+    if (valStr.compare("NA") == 0) {
+        return -2;
+    }
+    errno = 0;
+    int retval = strtol(valStr.c_str(), (char **) NULL, 10);
+    if (errno != 0) {
+        return -3;
+    }
+
+    return retval;
+}

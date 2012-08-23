@@ -10,16 +10,22 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+/**
+ * Tests StringUtil class
+ * @author churas
+ */
 class StringUtilTest : public CppUnit::TestFixture 
 {
     CPPUNIT_TEST_SUITE( StringUtilTest );
     CPPUNIT_TEST( testGetIntAsPaddedString );
+    CPPUNIT_TEST( testConvertStringToNumber );
     CPPUNIT_TEST_SUITE_END();
 public:
     void setUp();
     void tearDown();
     
     void testGetIntAsPaddedString();
+    void testConvertStringToNumber();
 private:
 
 };

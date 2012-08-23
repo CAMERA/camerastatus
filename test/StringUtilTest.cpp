@@ -58,3 +58,33 @@ void StringUtilTest::testGetIntAsPaddedString() {
 
 }
 
+void StringUtilTest::testConvertStringToNumber(){
+    
+    StringUtil sUtil;
+    
+    //check passing in null returns -1
+    CPPUNIT_ASSERT(sUtil.convertStringToNumber(NULL) == -1);
+    
+    //check passing string with a number in it
+    CPPUNIT_ASSERT(sUtil.convertStringToNumber("2343") == 2343);
+    
+    //check passing string with % at end
+    CPPUNIT_ASSERT(sUtil.convertStringToNumber("1233%") == 1233);
+    CPPUNIT_ASSERT(sUtil.convertStringToNumber("1233 %") == 1233);
+
+    
+    //check passing string with % at front
+    CPPUNIT_ASSERT(sUtil.convertStringToNumber("%22") == 0);
+    
+    //check passing non numeric string
+    CPPUNIT_ASSERT(sUtil.convertStringToNumber("apple") == 0);
+    
+    //check passing in NA
+    CPPUNIT_ASSERT(sUtil.convertStringToNumber("NA") == -2);
+    
+    //check passing in number with characters in it
+    CPPUNIT_ASSERT(sUtil.convertStringToNumber("234A234") == 234);
+
+    //check passing in number too large
+    CPPUNIT_ASSERT(sUtil.convertStringToNumber("99999999999999999999999999999999999999999999") == -3);
+}

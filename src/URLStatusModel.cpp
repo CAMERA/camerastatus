@@ -14,6 +14,7 @@
 
 
 #include "URLStatusModel.hpp"
+#include "StringUtil.hpp"
 #include "Box.hpp"
 #include "CursesView.hpp"
 
@@ -51,16 +52,26 @@ extern "C" {
 URLStatusModel::URLStatusModel(const char *URL) {
     mp_URL = URL;
     mp_DataFromURL = std::string();
+    mp_pStringUtil = new StringUtil();
 }
 
 URLStatusModel::~URLStatusModel() {
+    if (mp_pStringUtil != NULL){
+        delete mp_pStringUtil;
+    }
 }
 
 void URLStatusModel::refresh() {
     CURL *curl;
     CURLcode res;
     struct Chunk chunk;
+    
+    //seems really inefficient to keep remaking this
     chunk.data = new char[MYBUFFER];
+    
+    //be sure to 0 out the array
+    memset(chunk.data,'\0',MYBUFFER);
+    
     chunk.size = 0;
 
     curl = curl_easy_init();
@@ -83,8 +94,9 @@ void URLStatusModel::refresh() {
         res = curl_easy_perform(curl);
         /* Check for errors */
         if (res != CURLE_OK) {
-            fprintf(stderr, "curl_easy_perform() failed: %s\n",
-                    curl_easy_strerror(res));
+//            fprintf(stderr, "curl_easy_perform() failed: %s\n",
+//                    curl_easy_strerror(res));
+            chunk.size = 0;
         }
         /* always cleanup */
         curl_easy_cleanup(curl);
@@ -97,19 +109,16 @@ void URLStatusModel::refresh() {
         mp_DataFromURL.clear();
     }
 
-    //    printf("%s\n",chunk.data);
-
-
-
     if (chunk.data != NULL) {
         delete chunk.data;
+        chunk.size = 0;
     }
 }
 
 int URLStatusModel::getClusterQueued(const char *cluster) {
     std::string cStatus = std::string(cluster) + std::string("jobsqueued");
     
-    return convertStringToNumber(getValueOfField(cStatus.c_str()));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField(cStatus.c_str()));
 }
 
 int URLStatusModel::getClusterHeld(const char *cluster) {
@@ -118,26 +127,26 @@ int URLStatusModel::getClusterHeld(const char *cluster) {
 
 int URLStatusModel::getClusterRunning(const char *cluster) {
     std::string cStatus = std::string(cluster) + std::string("jobsrunning");
-    return convertStringToNumber(getValueOfField(cStatus.c_str()));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField(cStatus.c_str()));
 }
 
 int URLStatusModel::getClusterLoad(const char *cluster) {
 
     std::string cStatus = std::string(cluster) + std::string("load");
     if (cStatus.compare("JOBload") == 0) {
-        return convertStringToNumber(getValueOfField("localqueueload"));
+        return mp_pStringUtil->convertStringToNumber(getValueOfField("localqueueload"));
     }
     if (cStatus.compare("WORKFLOWload") == 0) {
-        return convertStringToNumber(getValueOfField("workflowqueueload"));
+        return mp_pStringUtil->convertStringToNumber(getValueOfField("workflowqueueload"));
     }
     
-    return convertStringToNumber(getValueOfField(cStatus.c_str()));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField(cStatus.c_str()));
 }
 
 int URLStatusModel::getClusterDisk(const char *cluster) {
 
     std::string cStatus = std::string(cluster) + std::string("diskfull");
-    return convertStringToNumber(getValueOfField(cStatus.c_str()));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField(cStatus.c_str()));
 }
 
 const char *URLStatusModel::getClusterStatus(const char *cluster) {
@@ -148,7 +157,7 @@ const char *URLStatusModel::getClusterStatus(const char *cluster) {
 int URLStatusModel::getClusterHoursRemaining(const char *cluster) {
     std::string cStatus = std::string(cluster) + std::string("remainhours");
 
-    return convertStringToNumber(getValueOfField(cStatus.c_str()));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField(cStatus.c_str()));
 }
 
 std::list<std::string> URLStatusModel::getClusterList() {
@@ -176,7 +185,7 @@ std::list<std::string> URLStatusModel::getNews() {
 
     std::list<std::string> mylist;
     const char *timeStamp = getValueOfField("updatestr");
-    if (this->convertStringToNumber(getValueOfField("localqueuedownhosts")) > 0){
+    if (mp_pStringUtil->convertStringToNumber(getValueOfField("localqueuedownhosts")) > 0){
     
         std::string downNodes = std::string(timeStamp);
         downNodes += " -- ";
@@ -185,7 +194,7 @@ std::list<std::string> URLStatusModel::getNews() {
         mylist.push_back(downNodes);
     }
     
-    if (this->convertStringToNumber(getValueOfField("jbossmem")) > 50){
+    if (mp_pStringUtil->convertStringToNumber(getValueOfField("jbossmem")) > 50){
         std::string jbossMem = std::string(timeStamp);
         jbossMem  += " -- Jboss consuming ";
         jbossMem += std::string(getValueOfField("jbossmem"));
@@ -197,23 +206,23 @@ std::list<std::string> URLStatusModel::getNews() {
 }
 
 int URLStatusModel::getNumberRunningWorkflows() {
-    return convertStringToNumber(getValueOfField("workflowsrunning"));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField("workflowsrunning"));
 }
 
 int URLStatusModel::getNumberQueuedWorkflows() {
-    return convertStringToNumber(getValueOfField("workflowsqueued"));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField("workflowsqueued"));
 }
 
 int URLStatusModel::getNumberHeldWorkflows() {
-    return convertStringToNumber(getValueOfField("workflowsheld"));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField("workflowsheld"));
 }
 
 int URLStatusModel::getNumberRunningJobs() {
-    return convertStringToNumber(getValueOfField("alljobsrunning"));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField("alljobsrunning"));
 }
 
 int URLStatusModel::getNumberQueuedJobs() {
-    return convertStringToNumber(getValueOfField("alljobsqueuedheld"));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField("alljobsqueuedheld"));
 }
 
 int URLStatusModel::getNumberHeldJobs() {
@@ -221,15 +230,15 @@ int URLStatusModel::getNumberHeldJobs() {
 }
 
 int URLStatusModel::getWorkflowWaitTimeToRunInSeconds() {
-    return convertStringToNumber(getValueOfField("avgworkflowwaittostart"));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField("avgworkflowwaittostart"));
 }
 
 int URLStatusModel::getJobWaitTimeToRunInSeconds() {
-    return convertStringToNumber(getValueOfField("avgjobwaittostart"));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField("avgjobwaittostart"));
 }
 
 int URLStatusModel::getLoggedInUsers() {
-    return convertStringToNumber(getValueOfField("loggedinusers"));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField("loggedinusers"));
 }
 
 const char *URLStatusModel::getLastLogin() {
@@ -243,7 +252,7 @@ std::list<std::string> URLStatusModel::getSystemAlerts() {
 }
 
 int URLStatusModel::getNumberWorkflowsRun() {
-    return convertStringToNumber(getValueOfField("totalworkflowsrun"));
+    return mp_pStringUtil->convertStringToNumber(getValueOfField("totalworkflowsrun"));
 }
 
 const char *URLStatusModel::getLastWorkflowSubmission() {
@@ -277,27 +286,5 @@ const char *URLStatusModel::getValueOfField(const char *fieldName) {
     }
 
     return "NA";
-}
-
-int URLStatusModel::convertStringToNumber(const char *val) {
-    if (val == NULL) {
-        return -1;
-    }
-    std::string valStr = std::string(val);
-    size_t percentPos = valStr.find('%');
-    if (percentPos != std::string::npos) {
-        valStr = valStr.replace(percentPos, 0, "");
-    }
-
-    if (valStr.compare("NA") == 0) {
-        return -1;
-    }
-    errno = 0;
-    int retval = strtol(valStr.c_str(), (char **) NULL, 10);
-    if (errno != 0) {
-        return 9;
-    }
-
-    return retval;
 }
 

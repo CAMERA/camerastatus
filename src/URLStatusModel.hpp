@@ -9,6 +9,8 @@
 #include <list>
 #include <string>
 
+//forward declaration
+class StringUtil;
 
 /**
  * Instances of this class obtain current CAMERA status from URL specified in 
@@ -60,17 +62,10 @@ private:
      * @return 
      */
     const char *getValueOfField(const char *fieldName);
-
-    /**
-     * This method will take a string and convert it to an integer number removing
-     * a % if it exists at the end
-     * @param val string to convert to a number
-     * @return integer value extracted from val string or -1 if there was a conversion problem
-     */
-    int convertStringToNumber(const char *val);
     
     const char *mp_URL;
     std::string mp_DataFromURL;
+    StringUtil *mp_pStringUtil;
 
 };
 
