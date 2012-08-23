@@ -14,7 +14,20 @@ camerastatus \- CAMERA system status monitor
 .B \-v,\--version
 ]
 .SH DESCRIPTION
-Displays information of current status of CAMERA system 
+Displays information of current status of CAMERA system by pulling
+data from a text file served on a webpage at periodic intervals.
+Currently the interval is 300 seconds between refreshes. 
+
+.B To refresh
+
+Hit 'r' or 'R' and the program will refresh by obtaining new data
+from the URL
+
+.B To exit
+
+Hit 'q' or 'Q' key a couple times
+
+
 .PP
 .SH OPTIONS
 .TP 12
@@ -29,6 +42,9 @@ Specifies alternate URL from which to obtain current status of CAMERA.  The
 default url is 
 http://cylume.camera.calit2.net/jstatus.txt.
 .TP
+.B \-rawdata             
+Hits URL, dumping data received to stdout and exits
+.TP
 .B \-simulate
 Instead of using real data this mode simulates CAMERA status.
 .SH FILES
@@ -36,9 +52,20 @@ Instead of using real data this mode simulates CAMERA status.
 .B @bindir@/camerastatus
 .br
 .PD
+.SH BUGS
+.PP
+This application is in an alpha state and probably will crash.  With that said
+the following known issues exist
+
+Resizing the terminal window will mess up the display
+
+If a call to the URL doesn't get complete data the code does NOT re hit the URL
+until the next refresh interval
+
+
 .SH AUTHORS
 .PP
-camerastatus is written by Christopher Churas<churas@gmail.com>
+camerastatus is written by Christopher Churas<churas@ncmir.ucsd.edu>
 .PP
 Report bugs at
 .BR https://github.com/CAMERA/camerastatus
