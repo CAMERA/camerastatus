@@ -13,10 +13,14 @@ CursesColors *cp){
    mp_StartY = starty;
    mp_Height = height;
    mp_Width = width;
+   
+   mp_pTitle = NULL;
    if (title != NULL){
      mp_pTitle = new std::string(title);   
    }
+   
    mp_pColors = cp;
+   mp_pSlider = NULL;
    
 }
 
