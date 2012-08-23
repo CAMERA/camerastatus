@@ -14,6 +14,7 @@ void help(){
    fprintf(stderr,"   -h,--help\t\tDisplays this help\n");
    fprintf(stderr,"   -url [http URL]\t\tSets alternate URL to obtain CAMERA status from\n");
    fprintf(stderr,"   -simulate\t\tDisplays fake data to test UI\n");
+   fprintf(stderr,"   -rawdata\t\tHits URL dumping data received to stdout and exits\n");
    fprintf(stderr,"   -v,--version\t\t Display version\n");
 
    return;
@@ -46,7 +47,7 @@ int main(int argc, const char* argv[]) {
     std::string url = std::string("http://cylume.camera.calit2.net/jstatus.txt");
 
     StatusModel *status = NULL;
-
+    int rawdata = 0;
 
     //loop through command line parameters passed into this program
     for (int i = 0; i < argc; i++){
@@ -69,17 +70,30 @@ int main(int argc, const char* argv[]) {
          }
          url = std::string(argv[++i]);
       }
+      else if (command.compare("-rawdata") == 0){
+          rawdata = 1;
+      }
       else if (command.compare("-simulate") == 0){
          status = new FakeStatusModel();
       }
     }
  
+    
+    if (rawdata == 1){
+        URLStatusModel usm(url.c_str());
+        usm.refresh();
+        printf("%s\n",usm.getRawDataFromURL());
+        return 3;
+    }
+    
     if (status == NULL){	
 	    status = (StatusModel *)new URLStatusModel(url.c_str());
     }
     
+    
+    
     status->refresh();
-    //return 0;
+    
     CursesView cv(status);
     cv.initialize();
     cv.draw();
@@ -87,6 +101,9 @@ int main(int argc, const char* argv[]) {
     while (1 == 1) {
         if (counter % refreshInterval == 0 || keyCheck == 'r' || keyCheck == 'R'){
            status->refresh();
+           counter = 0; //reset the counter 
+                        //this way if user hits r key the time will be sleepTimeout x refreshInterval
+                        //in the future
         }
         cv.update();
         sleep(sleepTimeout);
