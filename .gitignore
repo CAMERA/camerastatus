@@ -1,5 +1,6 @@
 nbproject/
 *.o
+*~
 camerastatus
 camerastatus*.gz
 Makefile
@@ -11,7 +12,6 @@ test/.deps/
 stamp-h1
 src/.dirstamp
 test/.dirstamp
-Makefile.am~
 Makefile.in
 autom4te.cache/
 camerastatustest
