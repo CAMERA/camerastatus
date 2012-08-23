@@ -22,23 +22,28 @@ StringUtil::~StringUtil() {
  * @param size width of resulting string
  * @return const char of string with spaces padding to left of value passed in
  */
-const char *StringUtil::getIntAsPaddedString(int value,int maxvalue,int size){
+const char *StringUtil::getIntAsPaddedString(int value,int maxvalue,int width){
     
-    if (size <= 0){
+    if (width <= 0){
         return "";
     }  
-    char buff[size];
+    
+    //don't allow any width greater then MAX_FIELD_SIZE_OF_INT
+    if (width > MAX_FIELD_SIZE_OF_INT){
+        width = MAX_FIELD_SIZE_OF_INT;
+    }
+    
       
     if (value > maxvalue){
-        snprintf(buff,size,"######");
+        return std::string(width,'#').c_str();
     }
-    else {
-        snprintf(buff,size,"%d",value);
-    }
+    
+    char buff[width+1];
+    snprintf(buff,width+1,"%d",value);
 
     std::string rbuff = std::string(buff);
     std::string tmp;
-    for (int i = 0; i < (size-rbuff.length());i++){
+    for (int i = 0; i < (width - rbuff.length());i++){
         tmp.insert(0," ");
     }
     rbuff.insert(0,tmp);

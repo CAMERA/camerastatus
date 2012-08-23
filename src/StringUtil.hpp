@@ -9,6 +9,8 @@
 #define	STRINGUTIL_HPP
 
 class StringUtil {
+    
+    static const int MAX_FIELD_SIZE_OF_INT = 10;
 public:
     StringUtil();
     virtual ~StringUtil();
