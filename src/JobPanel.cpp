@@ -27,7 +27,8 @@ JobPanel::JobPanel(int startX,int startY, int height, int width,CursesColors *cp
     mp_pWaitToRunHeader = new std::string("Avg Held To Run");
     mp_pStatusModel = model;
     mp_pWaitFieldClearString = new std::string(this->WAITFIELDSIZE,' ');
-    
+    mp_pWorkflowBar = NULL;
+    mp_pJobBar = NULL;
     
 }
 
