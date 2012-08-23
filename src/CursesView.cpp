@@ -17,6 +17,13 @@
 CursesView::CursesView(StatusModel *sm){
   // does not do anything yet
     mp_pStatusModel = sm;
+    mp_pBox = NULL;
+    mp_pColors = NULL;
+    mp_pNews = NULL;
+    mp_pJobPanel = NULL;
+    mp_pClusterPanel = NULL;
+    mp_pLoggedInUsersBar = NULL;
+    mp_pWorkflowsRunBar = NULL;
 }
 
 CursesView::~CursesView(){
