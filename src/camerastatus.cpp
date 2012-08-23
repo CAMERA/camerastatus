@@ -12,10 +12,10 @@ void help(){
    fprintf(stderr,"Usage: camerastatus [ -h,-help,--help ] [ -url http URL ] [ -v,-version ]\n");
    fprintf(stderr,"Display current status of CAMERA system\n\n");
    fprintf(stderr,"   -h,--help\t\tDisplays this help\n");
-   fprintf(stderr,"   -url [http URL]\t\tSets alternate URL to obtain CAMERA status from\n");
+   fprintf(stderr,"   -url [http URL]\tSets alternate URL to obtain CAMERA status from\n");
    fprintf(stderr,"   -simulate\t\tDisplays fake data to test UI\n");
-   fprintf(stderr,"   -rawdata\t\tHits URL dumping data received to stdout and exits\n");
-   fprintf(stderr,"   -v,--version\t\t Display version\n");
+   fprintf(stderr,"   -rawdata\t\tHits URL, dumping data received to stdout and exits\n");
+   fprintf(stderr,"   -v,--version\t\tDisplay version\n");
 
    return;
 }
