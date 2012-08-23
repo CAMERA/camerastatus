@@ -26,6 +26,7 @@ ClusterPanel::ClusterPanel(int startx,int starty,int height,int width,CursesColo
     mp_pColors = colors;
     mp_pStatusModel = sm;
     mp_pStatusClearString = new std::string(STATUSFIELDSIZE,' ');
+    mp_pClusterHash = NULL;
 }
 
 ClusterPanel::~ClusterPanel() {
