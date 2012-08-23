@@ -32,7 +32,7 @@ extern "C" {
         struct Chunk *mem = (struct Chunk *) userdata;
 
         //too much data should fail
-        if (mem->size+realsize >= MYBUFFER){
+        if (mem->size+realsize >= MYBUFFER-1){
             return -1;
         }
         
@@ -158,9 +158,10 @@ std::list<std::string> URLStatusModel::getClusterList() {
     //need to split list which is delimited by commas and put into
     //stl list
     char clistCharArray[clusterList.length()+1];
+    memset(clistCharArray,'\0',clusterList.length()+1);
     std::copy(clusterList.begin(),clusterList.end(),clistCharArray);
     
-    char seps[] = ",";
+    char seps[] = ",\n";
     char *token;
     token = strtok(clistCharArray,seps);
     while (token != NULL){
@@ -249,6 +250,11 @@ const char *URLStatusModel::getLastWorkflowSubmission() {
     return getValueOfField("lastworkflow");
 }
 
+const char *URLStatusModel::getRawDataFromURL(){
+    return this->mp_DataFromURL.c_str();
+}
+
+
 const char *URLStatusModel::getValueOfField(const char *fieldName) {
 
     if (fieldName == NULL) {
@@ -294,3 +300,4 @@ int URLStatusModel::convertStringToNumber(const char *val) {
 
     return retval;
 }
+

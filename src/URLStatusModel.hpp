@@ -48,6 +48,7 @@ public:
     int getNumberWorkflowsRun();
     const char *getLastWorkflowSubmission();
     
+    const char *getRawDataFromURL();
     
 private:
     
