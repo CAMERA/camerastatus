@@ -10,8 +10,9 @@ AM_INIT_AUTOMAKE([1.09 -Wall no-define])
 m4_include([m4/curses.m4])
 AC_PROG_CXX
 AC_LANG(C++)
-AC_CHECK_HEADERS(iostream)
+AC_CHECK_HEADERS([iostream])
 AC_CHECK_HEADERS([unistd.h])
+AC_CHECK_HEADERS([time.h])
 
 #check for curses library
 AX_WITH_CURSES
