@@ -25,6 +25,7 @@ camerastatus_SOURCES = src/camerastatus.cpp \
 
 camerastatustest_SOURCES = test/camerastatustest.cpp \
                            test/StringUtilTest.cpp \
+                           test/URLStatusModelTest.cpp \
                            src/CursesView.cpp \
                            src/Box.cpp \
                            src/CursesColors.cpp \
