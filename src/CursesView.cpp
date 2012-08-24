@@ -14,7 +14,7 @@
 #include "LoggedInUsersBar.hpp"
 #include "WorkflowsRunBar.hpp"
 
-CursesView::CursesView(StatusModel *sm) : mp_pStatusModel(sm),
+CursesView::CursesView(int width,int height,StatusModel *sm) : mp_pStatusModel(sm),
 mp_pBox(NULL),
 mp_pColors(NULL),
 mp_pNews(NULL),
@@ -22,9 +22,8 @@ mp_pJobPanel(NULL),
 mp_pClusterPanel(NULL),
 mp_pLoggedInUsersBar(NULL),
 mp_pWorkflowsRunBar(NULL) {
-    mp_Width = 79;
-    mp_Height = 23;
-
+    mp_Width = width;
+    mp_Height = height;
 }
 
 CursesView::~CursesView() {

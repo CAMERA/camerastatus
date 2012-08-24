@@ -1,3 +1,10 @@
+   8/24/12 New in camerastatus 0.7
+   -------------------------------
+
+* Added -geometry flag to allow alternate
+  display size
+
+
    8/24/12 New in camerastatus 0.6 
    -------------------------------
 

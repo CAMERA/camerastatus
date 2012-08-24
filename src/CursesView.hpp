@@ -40,10 +40,12 @@ public:
 
     /**
      * Constructor
+     * @param width Width in characters to fit display into
+     * @param height Height in characters to fix display into
      * @param sm Pointer to valid StatusModel object which is used to obtain data
      *           to display
      */
-    CursesView(StatusModel *sm); //constructor  
+    CursesView(int width,int height,StatusModel *sm); //constructor  
 
     /**
      * Destructor that deletes any objects instances of this class have created.

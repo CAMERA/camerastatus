@@ -6,7 +6,7 @@
 #include "URLStatusModel.hpp"
 #include "FakeStatusModel.hpp"
 #include "CursesView.hpp"
-
+#include "StringUtil.hpp"
 
 void help(){
    fprintf(stderr,"Usage: camerastatus [ -h,-help,--help ] [ -url http URL ] [ -v,-version ]\n");
@@ -15,6 +15,7 @@ void help(){
    fprintf(stderr,"   -url [http URL]\tSets alternate URL to obtain CAMERA status from\n");
    fprintf(stderr,"   -simulate\t\tDisplays fake data to test UI\n");
    fprintf(stderr,"   -rawdata\t\tHits URL, dumping data received to stdout and exits\n");
+   fprintf(stderr,"   -geometry [width height]\tSets alternate width and height for display\n");
    fprintf(stderr,"   -v,--version\t\tDisplay version\n");
 
    return;
@@ -41,6 +42,10 @@ int main(int argc, const char* argv[]) {
     //to find out number of seconds of delay take this number times sleepTimeout
     int refreshInterval = 300;
 
+    //width and height to display
+    int width = 79;
+    int height = 23;
+    
     //used to check if user hit Q/q or r/R key while in loop
     char keyCheck;
     std::string command;
@@ -76,6 +81,21 @@ int main(int argc, const char* argv[]) {
       else if (command.compare("-simulate") == 0){
          status = new FakeStatusModel();
       }
+      else if (command.compare("-geometry") == 0){
+          if (i+2>=argc){
+              fprintf(stderr,"-geometry requires 2 arguments. Run camerastatus -h for more information\n");
+              return 2;
+          }
+          StringUtil sUtil;
+          width = sUtil.convertStringToNumber(argv[++i]);
+          height = sUtil.convertStringToNumber(argv[++i]);
+          if (width <= 0){
+              width = 79;
+          }
+          if (height <= 0){
+              height = 23;
+          }
+      }
     }
  
     
@@ -103,7 +123,7 @@ int main(int argc, const char* argv[]) {
     }
     
     
-    CursesView cv(status);
+    CursesView cv(width,height,status);
     cv.initialize();
     cv.draw();
     int counter = 0;

@@ -47,6 +47,15 @@ Hits URL, dumping data received to stdout and exits
 .TP
 .B \-simulate
 Instead of using real data this mode simulates CAMERA status.
+.TP
+.B \-geometry " width height"
+Sets alternate geometry in characters for display.  Default is
+79 23.  
+
+Example: -geometry 78 21
+
+NOTE:  Any values below 77 18 may not display correctly.
+.TP
 .SH FILES
 .PD 0
 .B @bindir@/camerastatus

@@ -18,7 +18,7 @@ ClusterPanel::ClusterPanel(int startx,int starty,int height,int width,CursesColo
     mp_ClusterLoadLabel = std::string("Cluster Load       ");
     mp_DiskLabel = std::string("Disk  ");
     mp_HrsRemainLabel = std::string("HrsRemain  ");
-    mp_StatusLabel = std::string("Status      ");
+    mp_StatusLabel = std::string("Status    ");
     mp_StartX = startx;
     mp_StartY = starty;
     mp_Width = width;

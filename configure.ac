@@ -1,5 +1,5 @@
 
-AC_INIT([camerastatus], [0.6], [support@crbs.ucsd.edu],
+AC_INIT([camerastatus], [0.7], [support@crbs.ucsd.edu],
              [camerastatus], [http://www.camera.calit2.net/])
 AC_PREREQ([2.59])
 AM_INIT_AUTOMAKE([1.09 -Wall no-define])
