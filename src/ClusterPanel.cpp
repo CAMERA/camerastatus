@@ -50,6 +50,12 @@ void ClusterPanel::draw(){
     std::list<std::string>::iterator itr;
     for(itr=clusterList.begin(); itr != clusterList.end(); ++itr){
        std::string &cluster = *itr;
+       
+       //if the cluster is NA just continue
+       if (cluster.compare("NA") == 0){
+           continue;
+       }
+       
        HorizontalJobBar *jobBar = new HorizontalJobBar(mp_StartX+30,mp_StartY+lineCntr,19,mp_pColors);
        mp_pClusterHash->insert(std::pair<std::string,HorizontalJobBar *>(cluster,jobBar));
        jobBar->draw();
@@ -82,8 +88,12 @@ void ClusterPanel::update(){
         addstr(stringUtil.getIntAsPaddedString(mp_pStatusModel->getClusterQueued(cluster.c_str())+mp_pStatusModel->getClusterHeld(cluster.c_str()),99999,JOBFIELDSIZE));
         move(mp_StartY+lineCntr,mp_StartX+32);
         HorizontalJobBar *jobBar = this->mp_pClusterHash->find(cluster)->second;
-        jobBar->updateLoad(mp_pStatusModel->getClusterLoad(cluster.c_str()));
-        jobBar->update();
+        
+        //only update if we were able to obtain a valid jobBar object
+        if (jobBar != NULL){
+           jobBar->updateLoad(mp_pStatusModel->getClusterLoad(cluster.c_str()));
+           jobBar->update();
+        }
         mp_pColors->setColorPair(CursesColors::GREENBLACK);
         
         //render disk
