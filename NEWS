@@ -1,3 +1,18 @@
+   8/24/12 New in camerastatus 0.6 
+   -------------------------------
+
+* -rawdata flag which outputs data from URL and exits
+
+* -url flag to change which URL gets hit
+
+* Numerous bug fixes to deal with core dumps
+
+* -simulate flag added to show fake data
+
+* Code base modified to include cppunit and initial 
+  unit tests have been created for URLStatusModel and
+  StringUtil
+
    New in camerastatus 0.5
    -----------------------
 
