@@ -65,10 +65,15 @@ void News::update() {
             std::string &entry = *i;
             std::string tempStr = std::string(entry);
             
+            if (tempStr.compare("NA") == 0){
+                continue;
+            }
+            
             mvaddstr(mp_StartY + lineCntr, mp_StartX, mp_pClearString->c_str());
             if (tempStr.length() >= mp_pClearString->length()-5){
                 tempStr = tempStr.substr(0,mp_pClearString->length()-5)+std::string("...");
             }
+            
             mvaddstr(mp_StartY + (lineCntr++), mp_StartX + 1, tempStr.c_str());
 
             //can only fit in top 3
