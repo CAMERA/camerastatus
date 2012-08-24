@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string>
 #include <errno.h>
+#include <stdlib.h>
 
 StringUtil::StringUtil() {
 }
