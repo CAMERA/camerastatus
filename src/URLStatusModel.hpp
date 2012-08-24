@@ -22,6 +22,7 @@ public:
     URLStatusModel(const char *URL);
     virtual ~URLStatusModel();
     void refresh();
+    void refresh(const char *dataFromURL);
     std::list<std::string> getNews();
     
     int getNumberRunningWorkflows();
@@ -51,6 +52,8 @@ public:
     const char *getLastWorkflowSubmission();
     
     const char *getRawDataFromURL();
+    
+    const char *getLastLine();
     
 private:
     

@@ -45,6 +45,7 @@ public:
     int getNumberWorkflowsRun();
     const char *getLastWorkflowSubmission();
     
+    const char *getLastLine();
     
 private:
     int getRandomNumber(int max);

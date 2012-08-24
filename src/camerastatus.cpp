@@ -94,6 +94,15 @@ int main(int argc, const char* argv[]) {
     
     status->refresh();
     
+    //verify we got all the data if not bail
+    const char *lastLine = status->getLastLine();
+    if (lastLine == NULL || std::string(lastLine).compare("true") != 0){
+        fprintf(stderr,"It appears the data on %s is NOT complete.\nPlease wait a minute and restart this program\n",
+                url.c_str());
+        return 4;
+    }
+    
+    
     CursesView cv(status);
     cv.initialize();
     cv.draw();

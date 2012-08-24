@@ -61,6 +61,15 @@ URLStatusModel::~URLStatusModel() {
     }
 }
 
+void URLStatusModel::refresh(const char *dataFromURL){
+    
+    mp_DataFromURL.clear();
+
+    if (dataFromURL != NULL){
+        mp_DataFromURL.append(dataFromURL);
+    }
+}
+
 void URLStatusModel::refresh() {
     CURL *curl;
     CURLcode res;
@@ -116,7 +125,15 @@ void URLStatusModel::refresh() {
 }
 
 int URLStatusModel::getClusterQueued(const char *cluster) {
+    if (cluster == NULL){
+        return -2;
+    }
+    
     std::string cStatus = std::string(cluster) + std::string("jobsqueued");
+    
+    if (cStatus.compare("jobsqueued") == 0){
+        return -2;
+    }
     
     return mp_pStringUtil->convertStringToNumber(getValueOfField(cStatus.c_str()));
 }
@@ -187,8 +204,7 @@ std::list<std::string> URLStatusModel::getNews() {
     const char *timeStamp = getValueOfField("updatestr");
     if (mp_pStringUtil->convertStringToNumber(getValueOfField("localqueuedownhosts")) > 0){
     
-        std::string downNodes = std::string(timeStamp);
-        downNodes += " -- ";
+        std::string downNodes;
         downNodes += std::string(getValueOfField("localqueuedownhosts"));
         downNodes += " compute nodes down";
         mylist.push_back(downNodes);
@@ -264,27 +280,34 @@ const char *URLStatusModel::getRawDataFromURL(){
 }
 
 
+const char *URLStatusModel::getLastLine(){
+    return getValueOfField("lastline");
+}
+
 const char *URLStatusModel::getValueOfField(const char *fieldName) {
 
     if (fieldName == NULL) {
         return "NA";
     }
-
-    std::string fieldNameStr = std::string("\n") + fieldName + std::string(": ");
+    std::string fieldNameStr = std::string("\n") + std::string(fieldName) + std::string(": ");
 
     size_t fieldPos = mp_DataFromURL.find(fieldNameStr);
     if (fieldPos == std::string::npos) {
-        return "NA";
+        //add one more check its possible the field is the first entry so there
+        //is no newline before hand
+        fieldNameStr = std::string(fieldName) + std::string(": ");
+        fieldPos = mp_DataFromURL.find(fieldNameStr);
+        if (fieldPos != 0){
+            return "NA";
+        }
     }
 
     size_t newLinePos = mp_DataFromURL.find('\n', fieldPos + fieldNameStr.length());
     if (newLinePos != std::string::npos) {
-        std::string uh = std::string(fieldName);
-      
         return mp_DataFromURL.substr(fieldPos + fieldNameStr.length(),
                 (newLinePos - (fieldPos + fieldNameStr.length()))).c_str();
     }
-
+    
     return "NA";
 }
 
