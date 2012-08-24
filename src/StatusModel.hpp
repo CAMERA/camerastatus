@@ -44,6 +44,8 @@ public:
     
     virtual int getNumberWorkflowsRun() = 0;
     virtual const char *getLastWorkflowSubmission() = 0;
+    
+    virtual const char *getLastLine() = 0;
 };
 
 
