@@ -132,6 +132,11 @@ void ClusterPanel::update(){
         if (clusterStatus.compare("Disabled") == 0){
             mp_pColors->setColorPair(CursesColors::REDBLACK);
         }
+        
+        if (clusterStatus.compare("Down") == 0){
+            mp_pColors->setColorPair(CursesColors::REDBLACK);
+        }
+        
         if (clusterStatus.compare("Available") == 0){
             mp_pColors->setColorPair(CursesColors::GREENBLACK);
         }
