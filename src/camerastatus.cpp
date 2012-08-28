@@ -115,11 +115,11 @@ int main(int argc, const char* argv[]) {
     status->refresh();
     
     //verify we got all the data if not bail
-    const char *lastLine = status->getLastLine();
-    if (lastLine == NULL || std::string(lastLine).compare("true") != 0){
-        fprintf(stderr,"It appears the data on %s is NOT complete.\nPlease wait a minute and restart this program\n",
-                url.c_str());
-        return 4;
+    while (status->getLastLine() == NULL || std::string(status->getLastLine()).compare("true") != 0){
+        fprintf(stderr,"It appears the data on %s : %s is NOT complete... Please wait..\n",
+                url.c_str(),status->getLastLine());
+        sleep(10);
+        status->refresh();
     }
     
     
@@ -127,12 +127,25 @@ int main(int argc, const char* argv[]) {
     cv.initialize();
     cv.draw();
     int counter = 0;
+    int refreshNow = 0;
     while (1 == 1) {
-        if (counter % refreshInterval == 0 || keyCheck == 'r' || keyCheck == 'R'){
+        if (counter % refreshInterval == 0 || 
+            keyCheck == 'r' || 
+            keyCheck == 'R' ||
+            refreshNow == 1){
            status->refresh();
            counter = 0; //reset the counter 
                         //this way if user hits r key the time will be sleepTimeout x refreshInterval
                         //in the future
+           
+           //looks like we tried to refresh at a point where the data is NOT
+           //complete on the server.  lets simulate the user hitting the r key
+           if (status->getLastLine() == NULL || std::string(status->getLastLine()).compare("true") != 0){
+               refreshNow = 1;
+           }
+           else {
+               refreshNow = 0;
+           }
         }
         cv.update();
         sleep(sleepTimeout);
