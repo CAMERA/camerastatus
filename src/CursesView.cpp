@@ -81,9 +81,9 @@ int CursesView::initialize() {
     std::string title = std::string("Camera System Monitor v") + std::string(PACKAGE_VERSION);
     mp_pBox = new Box(0, 0, mp_Height, mp_Width, title.c_str(), mp_pColors);
     mp_pJobPanel = new JobPanel(1, 6, 3, mp_Width, mp_pColors, mp_pStatusModel);
-    mp_pClusterPanel = new ClusterPanel(1, 10, 6, mp_Width, mp_pColors, mp_pStatusModel);
-    mp_pLoggedInUsersBar = new LoggedInUsersBar(1, 17, mp_Width, mp_pColors, mp_pStatusModel);
-    mp_pWorkflowsRunBar = new WorkflowsRunBar(1, 18, mp_Width, mp_pColors, mp_pStatusModel);
+    mp_pClusterPanel = new ClusterPanel(1, 10, 8, mp_Width, mp_pColors, mp_pStatusModel);
+    mp_pLoggedInUsersBar = new LoggedInUsersBar(1, 19, mp_Width, mp_pColors, mp_pStatusModel);
+    mp_pWorkflowsRunBar = new WorkflowsRunBar(1, 20, mp_Width, mp_pColors, mp_pStatusModel);
     return 0;
 }
 
