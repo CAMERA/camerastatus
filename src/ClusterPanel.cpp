@@ -51,10 +51,6 @@ void ClusterPanel::draw(){
     for(itr=clusterList.begin(); itr != clusterList.end(); ++itr){
        std::string &cluster = *itr;
        
-       //if the cluster is NA just continue
-       if (cluster.compare("NA") == 0){
-           continue;
-       }
        
        HorizontalJobBar *jobBar = new HorizontalJobBar(mp_StartX+30,mp_StartY+lineCntr,19,mp_pColors);
        mp_pClusterHash->insert(std::pair<std::string,HorizontalJobBar *>(cluster,jobBar));
@@ -80,6 +76,7 @@ void ClusterPanel::update(){
     for(itr=clusterList.begin(); itr != clusterList.end(); ++itr){
         mp_pColors->setColorPair(CursesColors::CYANBLACK);
         std::string &cluster = *itr;
+        
         move(mp_StartY+lineCntr,mp_StartX+1);
         addstr(cluster.c_str());
         move(mp_StartY+lineCntr,mp_StartX+13);
