@@ -7,7 +7,7 @@
 
 #include "StringUtil.hpp"
 #include <stdio.h>
-#include <string>
+#include <iostream>
 #include <errno.h>
 #include <stdlib.h>
 
@@ -63,4 +63,51 @@ int StringUtil::convertStringToNumber(const char *val) {
     }
 
     return retval;
+}
+
+std::list<std::string> StringUtil::split(const char *val,const char *delimiter){
+    std::list<std::string> reslist;
+    
+    //bail if either list or delimiter is null
+    if (val == NULL || delimiter == NULL){
+        return reslist;
+    }
+    std::string::size_type prevDelim = std::string::npos;
+    std::string::size_type nextDelim = std::string::npos;
+
+    //Find first occurrence of delimiter and set nextDelim to it
+    //The prevDelim is set to std::string::npos initially.
+    //Loop calling find repeatedly until no more delimiters are found.
+    //In each iteration add string found between prevDelim and nextDelim and handle
+    //special case where prevDelim is unset.
+    //Out of loop add last delimited string
+    std::string valStr = std::string(val);
+    nextDelim = valStr.find(delimiter,0);
+    while(nextDelim != std::string::npos){
+        if (prevDelim == std::string::npos){
+                reslist.push_back(valStr.substr(0,nextDelim));
+        }
+        else {
+                reslist.push_back(valStr.substr(prevDelim+1,nextDelim-prevDelim-1));
+        }
+        
+        prevDelim = nextDelim;
+        nextDelim = valStr.find(delimiter,prevDelim+1);
+    }
+    
+    if (nextDelim == std::string::npos){
+        nextDelim = valStr.length();
+    }
+    
+    if (prevDelim != nextDelim){
+        if (prevDelim == std::string::npos){
+                reslist.push_back(valStr.substr(0,nextDelim));
+        }
+        else {
+                reslist.push_back(valStr.substr(prevDelim+1,nextDelim-prevDelim-1));
+        }
+    }
+    
+    
+    return reslist;
 }

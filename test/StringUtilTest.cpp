@@ -9,6 +9,7 @@
 #include "../src/StringUtil.hpp"
 #include <string>
 #include <string.h>
+#include <iostream>
 // Registers the fixture into the 'registry'
 CPPUNIT_TEST_SUITE_REGISTRATION(StringUtilTest);
 
@@ -87,4 +88,80 @@ void StringUtilTest::testConvertStringToNumber(){
 
     //check passing in number too large
     CPPUNIT_ASSERT(sUtil.convertStringToNumber("99999999999999999999999999999999999999999999") == -3);
+}
+
+void StringUtilTest::testSplitNullArgs(){
+    StringUtil sUtil;
+    
+    //test null arguments
+    std::list<std::string> sList = sUtil.split(NULL,NULL);
+    CPPUNIT_ASSERT(sList.empty() == true);
+    
+    sList = sUtil.split("blah",NULL);
+    CPPUNIT_ASSERT(sList.empty() == true);
+    
+    sList = sUtil.split(NULL,"sdf");
+    CPPUNIT_ASSERT(sList.empty() == true);
+}
+
+void StringUtilTest::testSplitValidArgs(){
+    StringUtil sUtil;
+    
+    //test 3 in list
+    std::list<std::string> sList = sUtil.split("codonis,trestles,steele",",");
+    CPPUNIT_ASSERT(sList.empty() == false);
+
+    CPPUNIT_ASSERT(sList.size() == 3);
+    CPPUNIT_ASSERT(sList.front() == "codonis");
+    sList.pop_front();
+
+    CPPUNIT_ASSERT(sList.front() == "trestles");
+    sList.pop_front();
+
+    CPPUNIT_ASSERT(sList.front() == "steele");
+
+    //test 2 in list
+    sList = sUtil.split("codonis,steele",",");
+    CPPUNIT_ASSERT(sList.empty() == false);
+
+    CPPUNIT_ASSERT(sList.size() == 2);
+    CPPUNIT_ASSERT(sList.front() == "codonis");
+    sList.pop_front();
+
+    CPPUNIT_ASSERT(sList.front() == "steele");
+
+    //test 1 in list
+    sList = sUtil.split("codonis",",");
+    CPPUNIT_ASSERT(sList.empty() == false);
+
+    CPPUNIT_ASSERT(sList.size() == 1);
+    CPPUNIT_ASSERT(sList.front() == "codonis");
+
+    //test 7 in list
+    sList = sUtil.split("codonis,trestles,steele,a,b,c,d",",");
+    CPPUNIT_ASSERT(sList.empty() == false);
+
+    CPPUNIT_ASSERT(sList.size() == 7);
+    CPPUNIT_ASSERT(sList.front() == "codonis");
+    sList.pop_front();
+
+    CPPUNIT_ASSERT(sList.front() == "trestles");
+    sList.pop_front();
+
+    CPPUNIT_ASSERT(sList.front() == "steele");
+    sList.pop_front();
+    
+    CPPUNIT_ASSERT(sList.front() == "a");
+    sList.pop_front();
+
+    CPPUNIT_ASSERT(sList.front() == "b");
+    sList.pop_front();
+
+    CPPUNIT_ASSERT(sList.front() == "c");
+    sList.pop_front();
+
+    CPPUNIT_ASSERT(sList.front() == "d");
+    sList.pop_front();
+
+
 }

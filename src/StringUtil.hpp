@@ -8,6 +8,9 @@
 #ifndef STRINGUTIL_HPP
 #define	STRINGUTIL_HPP
 
+#include <list>
+#include <string>
+
 /**
  * Instances of this class provide a couple helper String methods
  * @author churas
@@ -53,6 +56,18 @@ public:
      * @return number extracted from string or -1, -2, -3 if there is an error.
      */
     int convertStringToNumber(const char *val);
+    
+    /**
+     * Splits the string passed in val parameter by delimiter returning
+     * the split up result.  The delimiter will ignore any strings that are
+     * 0 size so if you have a delimiter of # and a string of #h##o the array
+     * will be
+     * {h,o}
+     * @param val - String to split
+     * @param delim - Delimiter to use to split
+     * @return list of string objects representing the split string.
+     */
+    std::list<std::string> split(const char *val,const char *delimiter);
     
 private:
 

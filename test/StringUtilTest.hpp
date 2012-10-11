@@ -19,6 +19,8 @@ class StringUtilTest : public CppUnit::TestFixture
     CPPUNIT_TEST_SUITE( StringUtilTest );
     CPPUNIT_TEST( testGetIntAsPaddedString );
     CPPUNIT_TEST( testConvertStringToNumber );
+    CPPUNIT_TEST( testSplitNullArgs );
+    CPPUNIT_TEST( testSplitValidArgs );
     CPPUNIT_TEST_SUITE_END();
 public:
     void setUp();
@@ -26,6 +28,9 @@ public:
     
     void testGetIntAsPaddedString();
     void testConvertStringToNumber();
+    void testSplitNullArgs();
+    void testSplitValidArgs();
+    
 private:
 
 };
