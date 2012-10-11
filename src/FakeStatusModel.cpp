@@ -72,7 +72,9 @@ std::list<std::string> FakeStatusModel::getClusterList(){
     mylist.push_back("Gordon");
     mylist.push_back("Trestles");
     mylist.push_back("Codonis");
-    mylist.push_back("Triton");
+    mylist.push_back("Lonestar");
+    mylist.push_back("Ranger");
+    mylist.push_back("Steele");
     return mylist;
 }
 
