@@ -49,6 +49,12 @@ extern "C" {
 
 }
 
+/**
+ * Constant that defines delimiter for cluster list
+ */
+const char *URLStatusModel::CLUSTER_LIST_DELIMITER = ",";
+
+
 URLStatusModel::URLStatusModel(const char *URL) {
     mp_URL = URL;
     mp_DataFromURL = std::string();
@@ -180,21 +186,13 @@ int URLStatusModel::getClusterHoursRemaining(const char *cluster) {
 std::list<std::string> URLStatusModel::getClusterList() {
     std::list<std::string> mylist;
     std::string clusterList = std::string(getValueOfField("clusterlist"));
-    
-    //need to split list which is delimited by commas and put into
-    //stl list
-    char clistCharArray[clusterList.length()+1];
-    memset(clistCharArray,'\0',clusterList.length()+1);
-    std::copy(clusterList.begin(),clusterList.end(),clistCharArray);
-    
-    char seps[] = ",\n";
-    char *token;
-    token = strtok(clistCharArray,seps);
-    while (token != NULL){
-        mylist.push_back(std::string(token));    
-        token = strtok(NULL,seps);
+
+    //just return if the list is empty or if the value returned is NA
+    if (clusterList.empty() == true ||
+        clusterList == "NA"){
+        return mylist;
     }
-    
+    mylist = mp_pStringUtil->split(clusterList.c_str(),CLUSTER_LIST_DELIMITER);
     return mylist;
 }
 

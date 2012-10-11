@@ -15,6 +15,7 @@ class URLStatusModelTest : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE( URLStatusModelTest );
     CPPUNIT_TEST( testRefresh );
     CPPUNIT_TEST( testGetClusterQueued );
+    CPPUNIT_TEST( testGetClusterList );
     CPPUNIT_TEST_SUITE_END();
     
     
@@ -24,6 +25,7 @@ public:
     
     void testRefresh();
     void testGetClusterQueued();
+    void testGetClusterList();
 private:
 
 };

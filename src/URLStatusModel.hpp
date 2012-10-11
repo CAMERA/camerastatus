@@ -19,6 +19,9 @@ class StringUtil;
  */
 class URLStatusModel : public StatusModel {
 public:
+    
+    static const char *CLUSTER_LIST_DELIMITER;
+    
     URLStatusModel(const char *URL);
     virtual ~URLStatusModel();
     void refresh();
