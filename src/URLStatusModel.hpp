@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 #include <curl/curl.h>
-
 #include "StatusModel.hpp"
 #include <list>
 #include <string>
@@ -72,6 +71,7 @@ private:
     const char *mp_URL;
     std::string mp_DataFromURL;
     StringUtil *mp_pStringUtil;
+    CURL *mp_pCurl;
 
 };
 

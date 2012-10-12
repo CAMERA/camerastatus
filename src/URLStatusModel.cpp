@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <curl/curl.h>
 #include <errno.h>
-
+#include <iostream>
 #include <string.h>
 
 
@@ -22,27 +22,22 @@
 
 extern "C" {
 
-#define MYBUFFER 64000
-    struct Chunk {
-        char *data;
-        size_t size;
-    };
+    static std::string STRING_BUFFER;
 
-    size_t curl_writecallback(void *contents, size_t size, size_t nmemb, void *userdata) {
-        size_t realsize = size * nmemb;
-        struct Chunk *mem = (struct Chunk *) userdata;
+    size_t curl_writecallback(char *data, size_t size, size_t nmemb, std::string *buffer) {
+        // What we will return  
+        int result = 0;
 
-        //too much data should fail
-        if (mem->size+realsize >= MYBUFFER-1){
-            return -1;
+        // Is there anything in the buffer?  
+        if (buffer != NULL && data != NULL) {
+            // Append the data to the buffer  
+            buffer->append(data, size * nmemb);
+
+            // How much did we write?  
+            result = size * nmemb;
         }
-        
-        memcpy(&(mem->data[mem->size]), (char *) contents, realsize);
-        mem->size += realsize;
-        
-        mem->data[mem->size] = 0;
 
-        return realsize;
+        return result;
     }
 
 
@@ -59,11 +54,15 @@ URLStatusModel::URLStatusModel(const char *URL) {
     mp_URL = URL;
     mp_DataFromURL = std::string();
     mp_pStringUtil = new StringUtil();
+    mp_pCurl = NULL;
 }
 
 URLStatusModel::~URLStatusModel() {
     if (mp_pStringUtil != NULL){
         delete mp_pStringUtil;
+    }
+    if (mp_pCurl != NULL){
+        curl_easy_cleanup(mp_pCurl);
     }
 }
 
@@ -77,56 +76,38 @@ void URLStatusModel::refresh(const char *dataFromURL){
 }
 
 void URLStatusModel::refresh() {
-    CURL *curl;
     CURLcode res;
-    struct Chunk chunk;
     
-    //seems really inefficient to keep remaking this
-    chunk.data = new char[MYBUFFER];
-    
-    //be sure to 0 out the array
-    memset(chunk.data,'\0',MYBUFFER);
-    
-    chunk.size = 0;
+    STRING_BUFFER.clear();
+    mp_DataFromURL.clear();
 
-    curl = curl_easy_init();
-    if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, mp_URL);
+    if (mp_pCurl == NULL){
+        mp_pCurl = curl_easy_init();
+    }
+    if (mp_pCurl) {
+        curl_easy_setopt(mp_pCurl, CURLOPT_URL, mp_URL);
 
         //set timeout to 10 seconds
-        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
+        curl_easy_setopt(mp_pCurl, CURLOPT_TIMEOUT, 10);
 
         //send data to curl_writecallback function
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_writecallback);
+        curl_easy_setopt(mp_pCurl, CURLOPT_WRITEFUNCTION, curl_writecallback);
 
         //pass in chunk struct
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &chunk);
+        curl_easy_setopt(mp_pCurl, CURLOPT_WRITEDATA, &STRING_BUFFER);
 
         // set user agent
-        curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+        curl_easy_setopt(mp_pCurl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
 
         /* Perform the request, res will get the return code */
-        res = curl_easy_perform(curl);
+        res = curl_easy_perform(mp_pCurl);
         /* Check for errors */
         if (res != CURLE_OK) {
-//            fprintf(stderr, "curl_easy_perform() failed: %s\n",
-//                    curl_easy_strerror(res));
-            chunk.size = 0;
+            //fprintf(stderr, "curl_easy_perform() failed: %s\n",
+            //        curl_easy_strerror(res));
+            
         }
-        /* always cleanup */
-        curl_easy_cleanup(curl);
-    }
-
-    //transfer chunk data to a string
-    if (chunk.data != NULL && chunk.size > 0) {
-        mp_DataFromURL = std::string(chunk.data);
-    } else {
-        mp_DataFromURL.clear();
-    }
-
-    if (chunk.data != NULL) {
-        delete chunk.data;
-        chunk.size = 0;
+        mp_DataFromURL.append(STRING_BUFFER);
     }
 }
 
@@ -186,7 +167,7 @@ int URLStatusModel::getClusterHoursRemaining(const char *cluster) {
 std::list<std::string> URLStatusModel::getClusterList() {
     std::list<std::string> mylist;
     std::string clusterList = std::string(getValueOfField("clusterlist"));
-
+    
     //just return if the list is empty or if the value returned is NA
     if (clusterList.empty() == true ||
         clusterList == "NA"){
@@ -288,7 +269,6 @@ const char *URLStatusModel::getValueOfField(const char *fieldName) {
         return "NA";
     }
     std::string fieldNameStr = std::string("\n") + std::string(fieldName) + std::string(": ");
-
     size_t fieldPos = mp_DataFromURL.find(fieldNameStr);
     if (fieldPos == std::string::npos) {
         //add one more check its possible the field is the first entry so there
@@ -302,10 +282,10 @@ const char *URLStatusModel::getValueOfField(const char *fieldName) {
 
     size_t newLinePos = mp_DataFromURL.find('\n', fieldPos + fieldNameStr.length());
     if (newLinePos != std::string::npos) {
-        return mp_DataFromURL.substr(fieldPos + fieldNameStr.length(),
-                (newLinePos - (fieldPos + fieldNameStr.length()))).c_str();
+        std::string res = mp_DataFromURL.substr(fieldPos + fieldNameStr.length(),
+                newLinePos - (fieldPos + fieldNameStr.length())).c_str();
+        return res.c_str();
     }
-    
     return "NA";
 }
 
