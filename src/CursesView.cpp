@@ -94,7 +94,8 @@ void CursesView::draw() {
     mp_pClusterPanel->draw();
     mp_pLoggedInUsersBar->draw();
     mp_pWorkflowsRunBar->draw();
-    refresh();
+    
+    refresh(); //ncurses call to render display
 }
 
 void CursesView::update() {
@@ -104,5 +105,6 @@ void CursesView::update() {
     mp_pClusterPanel->update();
     mp_pLoggedInUsersBar->update();
     mp_pWorkflowsRunBar->update();
-    refresh();
+    
+    refresh(); //ncurses call to render display
 }
