@@ -1,3 +1,12 @@
+   10/12/12 New in camerastatus 0.9
+   --------------------------------
+
+* Refactored code to pull data from 
+  jstatus, eliminating memory leak and 
+  other read bugs that were contributing
+  to seg faults
+
+
    9/12/12 New in camerastatus 0.8
    -------------------------------
 
