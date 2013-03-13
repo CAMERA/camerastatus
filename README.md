@@ -1,4 +1,4 @@
 camerastatus
 ============
 
-CAMERA status is an curses based UI providing status of CAMERA system
+CAMERA status is a ncurses based UI providing status of CAMERA system
