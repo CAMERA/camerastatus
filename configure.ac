@@ -16,6 +16,9 @@ AC_CHECK_HEADERS([time.h])
 
 #check for curses library
 AX_WITH_CURSES
+if test "x$ax_cv_ncursesw" != xyes && test "x$ax_cv_ncurses" != xyes; then
+   AC_MSG_ERROR([requires either NcursesW or Ncurses library])
+fi
 
 #need curl 7.15.5 or better
 PKG_CHECK_MODULES([CURL],[libcurl >= 7.15.5],
