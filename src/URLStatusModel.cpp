@@ -184,7 +184,9 @@ std::list<std::string> URLStatusModel::getNews() {
     if (mp_pStringUtil->convertStringToNumber(getValueOfField("localqueuedownhosts")) > 0){
     
         std::string downNodes;
-        downNodes += std::string(getValueOfField("localqueuedownhosts"));
+        downNodes += std::string(getValueOfField("localqueuepercenthostsdown"));
+        
+        downNodes += " ("+std::string(getValueOfField("localqueuedownhosts"))+")";
         downNodes += " compute nodes down";
         mylist.push_back(downNodes);
     }
