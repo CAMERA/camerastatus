@@ -14,7 +14,7 @@
 #include "LoggedInUsersBar.hpp"
 #include "WorkflowsRunBar.hpp"
 
-CursesView::CursesView(int width,int height,StatusModel *sm) : mp_pStatusModel(sm),
+CursesView::CursesView(int width,int height,StatusModel *sm,const char *title) : mp_pStatusModel(sm),
 mp_pBox(NULL),
 mp_pColors(NULL),
 mp_pNews(NULL),
@@ -24,6 +24,12 @@ mp_pLoggedInUsersBar(NULL),
 mp_pWorkflowsRunBar(NULL) {
     mp_Width = width;
     mp_Height = height;
+    if (title != NULL){
+       mp_Title = std::string(title);
+    }
+    else {
+       mp_Title = std::string("System Monitor "+std::string(PACKAGE_VERSION));
+    }
 }
 
 CursesView::~CursesView() {
@@ -78,8 +84,8 @@ int CursesView::initialize() {
     mp_pColors = new CursesColors();
     mp_pColors->initialize();
     mp_pNews = new News(1, 1, 4, mp_Width, mp_pColors, mp_pStatusModel);
-    std::string title = std::string("Camera System Monitor v") + std::string(PACKAGE_VERSION);
-    mp_pBox = new Box(0, 0, mp_Height, mp_Width, title.c_str(), mp_pColors);
+    
+    mp_pBox = new Box(0, 0, mp_Height, mp_Width, mp_Title.c_str(), mp_pColors);
     mp_pJobPanel = new JobPanel(1, 6, 3, mp_Width, mp_pColors, mp_pStatusModel);
     mp_pClusterPanel = new ClusterPanel(1, 10, 8, mp_Width, mp_pColors, mp_pStatusModel);
     mp_pLoggedInUsersBar = new LoggedInUsersBar(1, 19, mp_Width, mp_pColors, mp_pStatusModel);

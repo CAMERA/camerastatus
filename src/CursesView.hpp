@@ -1,6 +1,6 @@
 #ifndef __CURSESVIEW_H_INCLUDED__
 #define __CURSESVIEW_H_INCLUDED__
-
+#include <string>
 //forward declarations
 class Box;
 class CursesColors;
@@ -44,8 +44,9 @@ public:
      * @param height Height in characters to fix display into
      * @param sm Pointer to valid StatusModel object which is used to obtain data
      *           to display
+     * @param title Title to display in border box
      */
-    CursesView(int width,int height,StatusModel *sm); //constructor  
+    CursesView(int width,int height,StatusModel *sm,const char *title); //constructor  
 
     /**
      * Destructor that deletes any objects instances of this class have created.
@@ -128,5 +129,10 @@ private:
      * is called on them
      */
     StatusModel *mp_pStatusModel;
+
+    /**
+     * Title displayed in border box
+     */
+    std::string mp_Title;
 };
 #endif //__CURSESVIEW_H_INCLUDED__

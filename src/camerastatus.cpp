@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <unistd.h>
 #include <string>
+#include "config.h"
 #include "StatusModel.hpp"
 #include "URLStatusModel.hpp"
 #include "FakeStatusModel.hpp"
@@ -16,13 +17,14 @@ void help(){
    fprintf(stderr,"   -simulate\t\tDisplays fake data to test UI\n");
    fprintf(stderr,"   -rawdata\t\tHits URL, dumping data received to stdout and exits\n");
    fprintf(stderr,"   -geometry [width height]\tSets alternate width and height for display\n");
+   fprintf(stderr,"   -t,--title [title]\tSets title default is Camera System Monitor (version)\n");
    fprintf(stderr,"   -v,--version\t\tDisplay version\n");
 
    return;
 }
 
 void version(){
-   fprintf(stderr,"camerastatus 0.5\n");
+   fprintf(stderr,"camerastatus %s\n",PACKAGE_VERSION);
    return;
 }
 
@@ -50,7 +52,7 @@ int main(int argc, const char* argv[]) {
     char keyCheck;
     std::string command;
     std::string url = std::string("http://cylume.camera.calit2.net/jstatus.txt");
-
+    std::string title = "Camera System Monitor v"+std::string(PACKAGE_VERSION);
     StatusModel *status = NULL;
     int rawdata = 0;
 
@@ -63,7 +65,7 @@ int main(int argc, const char* argv[]) {
          help();
          return 1;
       }
-      else if (command.compare("-version") == 0  || 
+      else if (command.compare("-v") == 0  || 
                command.compare("--version") == 0){
          version();
          return 1;
@@ -77,6 +79,10 @@ int main(int argc, const char* argv[]) {
       }
       else if (command.compare("-rawdata") == 0){
           rawdata = 1;
+      }
+      else if (command.compare("-t") == 0 ||
+               command.compare("--title") == 0){
+          title = std::string(argv[++i]);
       }
       else if (command.compare("-simulate") == 0){
          status = new FakeStatusModel();
@@ -123,7 +129,7 @@ int main(int argc, const char* argv[]) {
     }
     
     
-    CursesView cv(width,height,status);
+    CursesView cv(width,height,status,title.c_str());
     cv.initialize();
     cv.draw();
     int counter = 0;
