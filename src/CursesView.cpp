@@ -83,13 +83,13 @@ int CursesView::initialize() {
 
     mp_pColors = new CursesColors();
     mp_pColors->initialize();
-    mp_pNews = new News(1, 1, 4, mp_Width, mp_pColors, mp_pStatusModel);
+    mp_pNews = new News(1, 1, 3, mp_Width, mp_pColors, mp_pStatusModel);
     
     mp_pBox = new Box(0, 0, mp_Height, mp_Width, mp_Title.c_str(), mp_pColors);
-    mp_pJobPanel = new JobPanel(1, 6, 3, mp_Width, mp_pColors, mp_pStatusModel);
-    mp_pClusterPanel = new ClusterPanel(1, 10, 8, mp_Width, mp_pColors, mp_pStatusModel);
-    mp_pLoggedInUsersBar = new LoggedInUsersBar(1, 19, mp_Width, mp_pColors, mp_pStatusModel);
-    mp_pWorkflowsRunBar = new WorkflowsRunBar(1, 20, mp_Width, mp_pColors, mp_pStatusModel);
+    mp_pJobPanel = new JobPanel(1, 5, 3, mp_Width, mp_pColors, mp_pStatusModel);
+    mp_pClusterPanel = new ClusterPanel(1, 9, 10, mp_Width, mp_pColors, mp_pStatusModel);
+    mp_pLoggedInUsersBar = new LoggedInUsersBar(1, 20, mp_Width, mp_pColors, mp_pStatusModel);
+    mp_pWorkflowsRunBar = new WorkflowsRunBar(1, 21, mp_Width, mp_pColors, mp_pStatusModel);
     return 0;
 }
 
