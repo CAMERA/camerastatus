@@ -13,11 +13,17 @@ The following applications are libraries are required to compile and run
 camera status.  
 
  autoconf
+ 
  make
+ 
  g++
+ 
  ncurses or ncursesw library
+ 
  libcurl >= 7.15.5
+ 
  libtool
+ 
 
  libcppunit (to build and run the test cases)
 
@@ -28,9 +34,13 @@ Compiling
 To build the application run the following commands
 
  ./autogen.sh
+ 
  ./configure
+ 
  make
+ 
  make test (requires libcppunit)
+ 
  make install
 
 Installation on Ubuntu 12.04
